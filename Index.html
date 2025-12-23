@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>MTT Plan – Digital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f7fa;margin:0;padding:12px}
+h1,h2,h3{margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+th,td{border:1px solid #999;padding:4px;text-align:center}
+th{background:#e5e7eb}
+input,textarea{width:100%;border:none;font-size:12px}
+textarea{resize:vertical}
+button{padding:8px 12px;margin-right:8px}
+
+.print-only{
+  visibility:hidden;
+  position:absolute;
+  left:-9999px;
+}
+@media print{
+  .screen-only{display:none}
+  .print-only{visibility:visible;position:static}
+}
+</style>
+</head>
+
+<body>
+
+<h1>MTT-Plan</h1>
+
+<div class="screen-only">
+<button onclick="window.print()">🖨️ PDF</button>
+<button onclick="exportJSON()">📤 JSON</button>
+</div>
+
+<!-- ================= HEADER ================= -->
+<table>
+<tr><th>Patient</th><td><input id="patient"></td><th>Datum</th><td><input id="datum" type="date"></td></tr>
+<tr><th>Station / Arzt</th><td colspan="3"><input id="station"></td></tr>
+<tr><th>Diagnose</th><td colspan="3"><input id="diagnose"></td></tr>
+<tr><th>Belastung</th><td colspan="3"><input id="belastung"></td></tr>
+<tr><th>Sonstiges</th><td colspan="3"><input id="sonstiges"></td></tr>
+</table>
+
+<!-- ================= AUFWÄRMEN ================= -->
+<h3>AUFWÄRMEN</h3>
+<table id="aufwaermen">
+<tr>
+<th>Gerät</th><th>Watt</th><th>UPM</th><th>Zeit</th>
+<th>Km/h</th><th>Pedale</th><th>Sitz-/Kurbelhöhe</th>
+</tr>
+<tr><td>Motomed / Theravital</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>Fahrrad</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>Handkurbel</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>Laufband</td><td></td><td></td><td><input></td><td><input></td><td></td><td><input></td></tr>
+<tr><td>Ellipsentrainer</td><td></td><td></td><td><input></td><td><input></td><td></td><td><input></td></tr>
+</table>
+
+<!-- ================= BEIN ================= -->
+<h3>BEIN</h3>
+<table id="bein">
+<tr><th>Nr</th><th>Gerät</th><th>Gewicht</th><th>S</th><th>W</th><th>Sitz</th><th>Bein</th><th>ROM</th><th>Höhe</th></tr>
+<tr><td>1</td><td>Beinstrecker</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>2</td><td>Beinbeuger</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>3a</td><td>Hüftmaschine Flex</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>3b</td><td>Hüftmaschine Ex</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>3c</td><td>Hüftmaschine Abd</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>4</td><td>Beinpresse</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</table>
+
+<!-- ================= RUMPF ================= -->
+<h3>RUMPF</h3>
+<table id="rumpf">
+<tr><th>Nr</th><th>Gerät</th><th>Gewicht</th><th>S</th><th>W</th><th>Rü</th><th>ROM</th></tr>
+<tr><td>10</td><td>Rumpfbeuger</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>11</td><td>Rumpfstrecker</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>12</td><td>Rumpfrotator</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</table>
+
+<!-- ================= ZUGAPPARATE ================= -->
+<h3>ZUGAPPARATE</h3>
+<table id="zug">
+<tr><th>Nr</th><th>Gerät</th><th>Gewicht</th><th>S</th><th>W</th><th>Bein</th><th>Höhe</th></tr>
+<tr><td>20</td><td>Kinesis</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>21</td><td>Zugapparat Vario Griffe</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>22a</td><td>Zugapparat Einfach Flex</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>22b</td><td>Zugapparat Einfach Ex</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>22c</td><td>Zugapparat Einfach Abd</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</table>
+
+<!-- ================= ARM ================= -->
+<h3>ARM</h3>
+<table id="arm">
+<tr><th>Nr</th><th>Gerät</th><th>Gewicht</th><th>S</th><th>W</th><th>Brust</th><th>Sitz</th><th>1 Arm</th><th>2 Arm</th></tr>
+<tr><td>30</td><td>Schulterpresse</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>31</td><td>Brustpresse gerade</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>32</td><td>Brustpresse diagonal</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>33</td><td>Latissimuszug seitlich</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>34</td><td>Butterfly reverse</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</table>
+
+<!-- ================= MATTE ================= -->
+<h3>MATTE</h3>
+<table id="matte">
+<tr><th>Flexibar</th><th>Pezziball</th><th>Kreisel</th><th>Dynair</th><th>Halbmond</th><th>Seil</th><th>Schaukelbrett</th></tr>
+<tr><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><th colspan="7">Wdh / Sätze / Zeit</th></tr>
+<tr><td colspan="7"><input></td></tr>
+<tr><th colspan="7">Bemerkungen</th></tr>
+<tr><td colspan="7"><input></td></tr>
+</table>
+
+<!-- ================= DEHNUNG ================= -->
+<h3>DEHNUNG</h3>
+<table id="dehnung">
+<tr><th>Nr</th><th>Übung</th><th>Zeit</th><th>Nerven dyn.</th><th>Muskel stat.</th><th>SPG/d</th><th>SPG/p</th><th>ROM</th></tr>
+<tr><td>50</td><td>Vorderseite UEX</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><td>51</td><td>Rückseite UEX</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</table>
+
+<script>
+function tableToArray(id){
+  const rows=[...document.querySelectorAll(`#${id} tr`)].slice(1);
+  return rows.map(r=>[...r.cells].map(c=>c.querySelector("input")?.value || c.innerText));
+}
+
+function exportJSON(){
+  const data={
+    header:{
+      patient:patient.value,
+      datum:datum.value,
+      station:station.value,
+      diagnose:diagnose.value,
+      belastung:belastung.value,
+      sonstiges:sonstiges.value
+    },
+    aufwaermen:tableToArray("aufwaermen"),
+    bein:tableToArray("bein"),
+    rumpf:tableToArray("rumpf"),
+    zugapparate:tableToArray("zug"),
+    arm:tableToArray("arm"),
+    matte:tableToArray("matte"),
+    dehnung:tableToArray("dehnung")
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="MTT_Plan.json";
+  a.click();
+}
+</script>
+
+</body>
+</html>
